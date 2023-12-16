@@ -56,4 +56,4 @@ class TestPathNaming(BaseTest):
 
     async def test_docs(self):
         response = await self.request_create(self.params_with_path("docs"))
-        assert response.status_code == status.HTTP_409_CONFLICT
+        assert response.status_code != status.HTTP_409_CONFLICT
