@@ -1,0 +1,13 @@
+sqlalchemy[asyncio]
+aiomysql
+alembic
+
+fastapi
+uvicorn[standard]
+
+pydantic
+pydantic_settings
+
+pytest-asyncio==0.21.1
+httpx
+cryptography
