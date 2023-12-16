@@ -1,0 +1,25 @@
+services:
+  tests:
+    build: .
+    env_file:
+      - .env
+    command: pytest
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_PASSWORD
+      timeout: 5s
+      retries: 120
+
+volumes:
+  db_data:
