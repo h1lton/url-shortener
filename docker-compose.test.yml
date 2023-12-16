@@ -18,3 +18,5 @@ services:
       test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_PASSWORD
       timeout: 5s
       retries: 120
+    logging:
+      driver: "none"
