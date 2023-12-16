@@ -38,4 +38,4 @@ class TestShortener(BaseTest):
 
     async def test_not_found(self):
         response = await self.request_get("non-existent-path")
-        assert response.status_code != status.HTTP_404_NOT_FOUND
+        assert response.status_code == status.HTTP_404_NOT_FOUND
