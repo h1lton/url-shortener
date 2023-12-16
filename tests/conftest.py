@@ -17,8 +17,8 @@ class BaseTest:
     def _client(self, ac: AsyncClient):
         self.client = ac
 
-    async def request_create(self, json: dict):
-        return await self.client.post("/", json=json)
+    async def request_create(self, data: dict):
+        return await self.client.post("/", json=data)
 
     async def request_get(self, path: str):
         return await self.client.get("/" + path)
@@ -72,7 +72,10 @@ def event_loop(request):
     loop.close()
 
 
+BASE_URL = "http://test"
+
+
 @pytest.fixture(scope="session")
 async def ac() -> AsyncGenerator[AsyncClient, None]:
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(app=app, base_url=BASE_URL) as ac:
         yield ac

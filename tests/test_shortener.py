@@ -3,7 +3,7 @@ import pytest
 from httpx import AsyncClient
 
 from starlette import status
-from tests.conftest import BaseTest
+from tests.conftest import BaseTest, BASE_URL
 
 
 class TestShortener(BaseTest):
@@ -14,7 +14,14 @@ class TestShortener(BaseTest):
     async def test_create_and_get_with_custom_path(self):
         response = await self.request_create(self.params)
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.json() == self.params["path"]
+        expected_data = {
+            "type": "link",
+            "attributes": self.params,
+            "links": {
+                "self": f"{BASE_URL}/{self.params['path']}",
+            },
+        }
+        assert response.json() == expected_data
 
         response = await self.request_get(self.params["path"])
         assert response.status_code == status.HTTP_307_TEMPORARY_REDIRECT
@@ -26,7 +33,8 @@ class TestShortener(BaseTest):
         )
         assert response.status_code == status.HTTP_201_CREATED
 
-        path = response.json()
+        response_data = response.json()
+        path = response_data["attributes"]["path"]
 
         response = await self.request_get(path)
         assert response.status_code == status.HTTP_307_TEMPORARY_REDIRECT
